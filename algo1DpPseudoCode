@@ -1,0 +1,28 @@
+def stocksRecursive(stocks, amount):
+    dpTable = [[0] * (amount + 1) for _ in range(len(stocks))]
+
+    for i in range(len(stocks)):
+        weight = stocks[i].weight
+        value = stocks[i].value
+        
+        for j in range(1, amount + 1):
+            if i > 0:
+                noTake = dpTable[i - 1][j]
+            else:
+                noTake = 0
+
+            if j >= weight:
+                if i > 0:
+                    take = value + dpTable[i - 1][j - weight]
+                else:
+                    take = value
+            else:
+                take = 0
+
+            dpTable[i][j] = max(take, noTake)
+
+    return dpTable[len(stocks) - 1][amount]	
+	
+	
+
+		
