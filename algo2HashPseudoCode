@@ -1,0 +1,33 @@
+def hashTableID(ID, hash = 13):
+	
+	hashTable = [null] * hash
+	hashTableCount = [null] * hash
+
+	for currentID in ID:
+		hashTableID = currentID % hash
+		
+		if(currentID != hashTable[hashTableID])
+			return hashTableID(ID, hash * 2)
+
+		hashTable[hashTableID] = currentID
+		hashTableCount[hashTableID] += 1
+
+	unique = 0
+	duplicate = 0
+
+	for currentID in ID:
+		hashTableID = currentID % hash
+
+		if hashTableCount[hashTableID] > 1:
+			print(hashTable[hashTableID] + "-> appears " + hashTableCount[hashTableID] + "times"
+			duplicate += 1
+		else:
+			unique += 1
+	
+	print("Total unique IDs: " + unique)
+	print("Total duplicate IDs: " + duplicate)
+			
+		
+
+	
+		
