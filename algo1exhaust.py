@@ -11,17 +11,21 @@ def maxStocks(stocks, amount):
     # output is supposed to be [10, [1, 3]]
     # splitting weight from the arrays so it's easier to work with
     # M IS OUR STOCKS
-    # Output only concerned with weight, so algorithm only extracts weight from the input
+    # splitting weight and values so it's easier to work with
     weight = [i[1] for i in stocks]
+    val = [i[1] for i in stocks]
+
     # for storing the best combos of stocks
     best = []
     bestW = 0
+    bestV = 0
     # searching through input
     for stock in range(1, len(stocks) + 1):
         # checking all possible combinations of stocks
         for combo in combinations(range(len(stocks)), stock):
             # adding up the weights in weight
             totW = sum(weight[i] for i in combo)
+            totV = sum(val[i] for i in combo)
         
             # checking if totW is below or same as the amount/cap
             if totW <= amount:
@@ -29,12 +33,13 @@ def maxStocks(stocks, amount):
                 if totW > bestW:
                 # update best weight
                     bestW = totW
+                    bestV = totV
                 # update best combo
                     best = list(combo)
 
     # return nothing if solution not found
     # will also return best combination if there is something found
-    return [bestW, best]    
+    return [bestV, best]    
     
 
 

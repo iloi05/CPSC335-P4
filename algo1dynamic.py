@@ -4,7 +4,6 @@ def stocksRecursive(stocks, amount):
     for i in range(len(stocks)):
         weight = stocks[i][1]
         val = stocks[i][0]
-
         for j in range(amount + 1):
             if i > 0:
                 toss = table[i - 1][j]
@@ -13,21 +12,41 @@ def stocksRecursive(stocks, amount):
             
             if j >= weight:
                 if i > 0:
-                    keep = weight + table[i - 1][j - weight]
+                    keep = val + table[i - 1][j - weight]
                 else:
-                    keep = weight
+                    keep = val
             else:
                 keep = 0
                 
             table[i][j] = max(keep, toss)
 
-    return table[len(stocks) - 1][amount]
+        best = []
+        j = amount
+
+    for i in range(len(stocks) - 1, -1, -1):
+        if i == 0:
+            if table[i][j] > 0:
+                best.append(i)
+        elif table[i][j] != table[i - 1][j]:
+            best.append(i)
+            j -= stocks[i][1]
+    best.reverse()
+
+    return [table[len(stocks) - 1][amount], best]
 
 def main():
     stocks = [[1, 2], [3, 3], [5, 6], [6, 7]]
     amount = 10
 
-    print(stocksRecursive(stocks, amount))
+    print("Example 1: ", stocksRecursive(stocks, amount))
+
+    stocks = [[3, 5], [2, 7], [6, 9], [1, 2]]
+    amount = 17
+    print("Example 2: ", stocksRecursive(stocks, amount))
+
+    stocks = [[3, 2], [4, 5], [6, 9], [2, 3]]
+    amount = 1
+    print("Example 3: ", stocksRecursive(stocks, amount))
 
 if __name__ == "__main__":
     main()
