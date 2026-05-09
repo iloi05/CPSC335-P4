@@ -13,11 +13,10 @@ def maxStocks(stocks, amount):
     # M IS OUR STOCKS
     # splitting weight and values so it's easier to work with
     weight = [i[1] for i in stocks]
-    val = [i[1] for i in stocks]
+    val = [i[0] for i in stocks]
 
     # for storing the best combos of stocks
     best = []
-    bestW = 0
     bestV = 0
     # searching through input
     for stock in range(1, len(stocks) + 1):
@@ -29,10 +28,9 @@ def maxStocks(stocks, amount):
         
             # checking if totW is below or same as the amount/cap
             if totW <= amount:
-            # if the new weight found is greater than the best weight
-                if totW > bestW:
-                # update best weight
-                    bestW = totW
+            # if the new value found is greater than the best value
+                if totV > bestV:
+                # update best value
                     bestV = totV
                 # update best combo
                     best = list(combo)
