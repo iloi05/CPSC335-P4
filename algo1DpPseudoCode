@@ -25,7 +25,7 @@ def stocksRecursive(stocks, amount):
                 take.value = 0
                 take.stock = []
 
-            if take["value"] > noTake["value"]:
+            if take.value > noTake.value:
                 dpTable[i][j] = take
             else:
                 dpTable[i][j] = noTake
