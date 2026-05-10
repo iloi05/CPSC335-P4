@@ -54,6 +54,12 @@ def main():
     amount = 1
     print("Example 3: ", maxStocks(stocks, amount))
 
+    stocks = [[5, 6], [10, 20], [7, 8], [14, 30]]
+    print()
+    print("User sample:", stocks)
+    amount = int(input("Enter your budget: "))
+    print("Your best stocks to buy: ", maxStocks(stocks, amount))
+
 if __name__ == "__main__":
     main()
 
