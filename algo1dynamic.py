@@ -5,52 +5,48 @@
 # Date: 5/8/2026
 
 def stocksRecursive(stocks, amount):
-    # table for candidates
-    table = [[0] * (amount + 1) for _ in range(len(stocks))]
-    # this entire forloop is for getting the max value
+    # make a table to keep track of candidates
+    dpTable = [[{"val": 0, "stock": []} for _ in range(amount + 1)]
+               for _ in range(len(stocks))
+    ]
+    # looping through stocks
     for i in range(len(stocks)):
-        # getting weights and values
+        # splitting weights and values
         weight = stocks[i][1]
         val = stocks[i][0]
-
+        # this part calculates what to toss and what to keep
         for j in range(1, amount + 1):
+            # checking current element in stocks
             if i > 0:
-                # tossing whatever exceeds the budget
-                toss = table[i - 1][j]
+                # marking whatever is not good as toss
+                toss = {"val": dpTable[i - 1][j]["val"],
+                        "stock": dpTable[i - 1][j]["stock"][:]}
             else:
-                # toss nothing if there is nothing to toss
-                toss = 0
-            
+                # nothing to toss then toss is empty
+                toss = {"val": 0, "stock": []}
             if j >= weight:
                 if i > 0:
-                    # keeping whatever has best weight that does not exceed budget
-                    keep = val + table[i - 1][j - weight]
+                    # oldCandidate was whatever was last found and was good
+                    oldCandidate = dpTable[i - 1][j - weight]
+                    # marking the oldCandidate for keeping
+                    keep = {"val": val + oldCandidate["val"],
+                            "stock": oldCandidate["stock"] + [i]
+                            }
                 else:
-                    # keep the value that is good
-                    keep = val
+                    # updating keep if something better is found
+                    keep = {"val": val, "stock": [i]}
             else:
-                # keep nothing if value is not good
-                keep = 0
-            # table is the max value found that we can get   
-            table[i][j] = max(keep, toss)
-        # best = for best index combos
-        # j is copy of amount given
-        best = []
-        j = amount
-    # this part is for getting the best combo of stocks
-    for i in range(len(stocks) - 1, -1, -1):
-        if i == 0:
-            if table[i][j] > 0:
-                # update best list if i = 0 and the best value found better than 0
-                best.append(i)
-        elif table[i][j] != table[i - 1][j]:
-            # update best and weight if max val is not same as previous candidate
-            best.append(i)
-            j -= stocks[i][1]
-    # reverse so that output is in ascending order
-    best.reverse()
-    # returns [max value, [best combo]]
-    return [table[len(stocks) - 1][amount], best]
+                # keep stays empty if nothing is found
+                keep = {"val": 0, "stock": []}
+                # if keep is greater than toss then we update the table to be keep
+            if keep["val"] > toss["val"]:
+                dpTable[i][j] = keep
+            else:
+                # keeping whatever we marked for tossing if nothing better is found
+                dpTable[i][j] = toss
+    # for shorter return statement
+    output = dpTable[len(stocks) - 1][amount]
+    return [output["val"], output["stock"]]
 
 def main():
     stocks = [[1, 2], [3, 3], [5, 6], [6, 7]]
@@ -58,7 +54,7 @@ def main():
 
     print("Example 1: ", stocksRecursive(stocks, amount))
 
-    stocks = [[3, 5], [2, 7], [6, 9], [1, 2]]
+    stocks = [[5, 6], [4, 7], [7, 9], [3, 2]]
     amount = 17
     print("Example 2: ", stocksRecursive(stocks, amount))
 
